@@ -31,6 +31,10 @@ def text_to_speech(text, voice="tara", output_file=None):
     return audio_segments
 
 
+long_text = """
+The wind howls across the Greenland ice sheet as Dr. Sarah Chen adjusts her goggles, squinting through the swirling snow. The drilling site's temporary shelter flaps violently against its supports, but the core extraction equipment remains steady, anchored deep into the ancient ice.
+    """
+
 voices = [
     "tara",
     "leah",
@@ -50,9 +54,21 @@ def test_all_voices():
             + voice
             + ". This is an example of using Orpheus TTS as a library.",
             voice=voice,
-            output_file="out/example_" + voice + ".wav",
+            output_file="example_" + voice + ".wav",
         )
         pass
+
+
+def long_example_test():
+    voice = "tara"
+    text_to_speech(
+        "Hello, I'm "
+        + voice
+        + ". This is an example of using Orpheus TTS as a library."
+        + long_text,
+        voice=voice,
+        output_file="example_frost-protocol_" + voice + ".wav",
+    )
 
 
 def main():
@@ -70,7 +86,9 @@ def main():
     #     output_file="example_leo.wav",
     # )
 
-    test_all_voices()
+    # test_all_voices()
+
+    long_example_test()
 
     print("All available voices:")
     for voice in AVAILABLE_VOICES:
