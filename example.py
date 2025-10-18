@@ -26,6 +26,10 @@ def text_to_speech(text, voice="tara", output_file=None):
         prompt=text,
         voice=voice,
         output_file="outputs/" + output_file if output_file else None,
+        temperature=0.6,
+        top_p=0.95,
+        repetition_penalty=1.1,
+        max_tokens=100000000,
     )
 
     return audio_segments
@@ -67,28 +71,28 @@ def long_example_test():
         + ". This is an example of using Orpheus TTS as a library."
         + long_text,
         voice=voice,
-        output_file="example_frost-protocol_" + voice + ".wav",
+        output_file="example_frost-protocol.wav",
     )
 
 
 def main():
     # Example 1: Generate speech with Tara voice
-    # text_to_speech(
-    #     "Hello, I'm Tara. This is an example of using Orpheus TTS as a library.",
-    #     voice="tara",
-    #     output_file="example_tara.wav",
-    # )
-    #
-    # # Example 2: Generate speech with a different voice
-    # text_to_speech(
-    #     "Hi there, I'm Leo. I have a different voice than Tara.",
-    #     voice="leo",
-    #     output_file="example_leo.wav",
-    # )
+    text_to_speech(
+        "Hello, I'm Tara. This is an example of using Orpheus TTS as a library.",
+        voice="tara",
+        output_file="example_tara.wav",
+    )
+
+    # Example 2: Generate speech with a different voice
+    text_to_speech(
+        "Hi there, I'm Leo. I have a different voice than Tara.",
+        voice="leo",
+        output_file="example_leo.wav",
+    )
 
     # test_all_voices()
 
-    long_example_test()
+    # long_example_test()
 
     print("All available voices:")
     for voice in AVAILABLE_VOICES:
