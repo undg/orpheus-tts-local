@@ -9,7 +9,8 @@ import queue
 model = SNAC.from_pretrained("hubertsiuzdak/snac_24khz").eval()
 
 # Check if CUDA is available and set device accordingly
-snac_device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+# snac_device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+snac_device = "cpu"
 print(f"Using device: {snac_device}")
 model = model.to(snac_device)
 
