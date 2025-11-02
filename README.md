@@ -26,6 +26,12 @@ A lightweight client for running [Orpheus TTS](https://huggingface.co/canopylabs
    ```bash
    python gguf_orpheus.py --text "Hello, this is a test" --voice tara
    ```
+7. Run example:
+
+   ```bash
+   python example.py
+   mpv example_outputs/*
+   ```
 
 ## Usage
 
