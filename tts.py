@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Simple example of using Orpheus TTS as a library.
 This script demonstrates how to generate speech and save it to a file.
@@ -6,8 +7,13 @@ This script demonstrates how to generate speech and save it to a file.
 
 from gguf_orpheus import AVAILABLE_VOICES, generate_speech_from_api
 
+MAX_TOKENS=150000
+VOICE="dan" # dan, tara, mia, leah, jess, leo,  zac, zoe
+TEMPERATURE=0.6
+TOP_P=0.95
 
-def text_to_speech(text, voice="tara", output_file=None):
+
+def text_to_speech(text, output_file=None):
     """
     Convert text to speech using Orpheus TTS.
 
@@ -19,69 +25,37 @@ def text_to_speech(text, voice="tara", output_file=None):
     Returns:
         list: Audio segments
     """
-    print(f"Converting: '{text}' with voice '{voice}'")
+    print(f"Converting: '{text}' with voice={VOICE}, max_tokens={MAX_TOKENS} , temperature={TEMPERATURE}, top_p={TOP_P}")
 
     # Generate speech
     audio_segments = generate_speech_from_api(
         prompt=text,
-        voice=voice,
-        output_file="outputs/" + output_file if output_file else None,
-        temperature=0.6,
-        top_p=0.95,
+        voice=VOICE,
+        output_file=output_file,
+        temperature=TEMPERATURE,
+        top_p=TOP_P,
         repetition_penalty=1.1,
-        max_tokens=100000000,
+        max_tokens=MAX_TOKENS,
     )
 
     return audio_segments
 
 
-long_text = """
-The wind howls across the Greenland ice sheet as Dr. Sarah Chen adjusts her goggles, squinting through the swirling snow. The drilling site's temporary shelter flaps violently against its supports, but the core extraction equipment remains steady, anchored deep into the ancient ice.
-    """
-
-voices = [
-    # "tara",
-    # "leah",
-    # "jess",
-    # "leo",
-    # "dan",
-    # "mia",
-    # "zac",
-    # "zoe",
-    "kaya",
-]
-
-
-def test_all_voices():
-    for voice in voices:
-        text_to_speech(
-            "Hello, I'm " + voice + long_text,
-            # + ". This is an example of using Orpheus TTS as a library.",
-            voice=voice,
-            output_file="example_" + voice + ".wav",
-        )
-        pass
-
-
-def example_test():
-    voice = "tara"
-    text_to_speech(
-        "Hello, I'm "
-        + voice
-        + ". This is an example of using Orpheus TTS as a library."
-        + long_text,
-        voice=voice,
-        output_file="example_frost-protocol.wav",
-    )
-
 
 def main():
-    test_all_voices()
-    # example_test()
-
-    print("All available voices:")
-    for voice in AVAILABLE_VOICES:
-        print(f"- {voice}")
+    import argparse
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--file", help="Text file to read")
+    parser.add_argument("--output", default="output.wav", help="Output file")
+    args = parser.parse_args()
+    
+    if args.file:
+        with open(args.file, 'r') as f:
+            text = f.read()
+            text_to_speech(text, output_file=args.output)
+    else:
+        print("provide --output filename.wav")
 
 
 if __name__ == "__main__":
