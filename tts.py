@@ -69,20 +69,43 @@ def split_into_chunks(text, target_words=50):
 
 def main():
     import argparse
+    import subprocess
+    import os
+    from pathlib import Path
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--file", help="Text file to read")
-    parser.add_argument("--output", default="output.wav", help="Output file")
+    parser.add_argument("--out", default="output.wav", help="Output file")
     args = parser.parse_args()
     
     if args.file:
         with open(args.file, 'r') as f:
             text = f.read()
             chunks = split_into_chunks(text)
+            chunk_files = []
+            
             for i, chunk in enumerate(chunks):
-                chunk_file_name = args.output.replace('.wav', f'_chunk{i:03d}.wav')
+                output_path = Path(args.out)
+                f_path = str(output_path.parent)
+                f_name = output_path.stem
+                f_ext = output_path.suffix[1:] or 'wav'  # [1:] removes dot
+                f_output = f'{f_path}/{f_name}.{f_ext}'
+
+                chunk_file = f'{f_path}/{f_name}/{f_name}_chunk{i:03d}.{f_ext}'
+                chunk_files.append(chunk_file)
                 print(f"\nchunk: {i+1}/{len(chunks)}")
-                text_to_speech(chunk, output_file=chunk_file_name)
+                text_to_speech(chunk, output_file=chunk_file)
+            
+            # Merge with ffmpeg
+            print(f"\nMerging {len(chunk_files)} chunks...")
+            list_file = "/tmp/concat_list.txt"
+            with open(list_file, 'w') as f:
+                for cf in chunk_files:
+                    f.write(f"file '{os.path.abspath(cf)}'\n")
+            
+            subprocess.run(['ffmpeg', '-f', 'concat', '-safe', '0', '-i', list_file, '-c', 'copy', f_output], check=True)
+            os.remove(list_file)
+            print(f"Merged to {args.out}")
     else:
         print("provide --file input.txt")
 
