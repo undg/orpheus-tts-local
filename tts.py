@@ -7,8 +7,8 @@ This script demonstrates how to generate speech and save it to a file.
 
 from gguf_orpheus import AVAILABLE_VOICES, generate_speech_from_api
 
-MAX_TOKENS=150000
-VOICE="dan" # dan, tara, mia, leah, jess, leo,  zac, zoe
+MAX_TOKENS=4800
+VOICE="tara" # dan, tara, mia, leah, jess, leo,  zac, zoe
 TEMPERATURE=0.6
 TOP_P=0.95
 
@@ -41,6 +41,31 @@ def text_to_speech(text, output_file=None):
     return audio_segments
 
 
+def split_into_chunks(text, target_words=50):
+    """Split text into chunks by sentences, aiming for target_words per chunk."""
+    sentences = text.split('.')
+    chunks = []
+    current_chunk = []
+    current_words = 0
+    
+    for sentence in sentences:
+        sentence = sentence.strip()
+        if not sentence:
+            continue
+        words = len(sentence.split())
+        if current_words + words > target_words and current_chunk:
+            chunks.append('. '.join(current_chunk) + '.')
+            current_chunk = [sentence]
+            current_words = words
+        else:
+            current_chunk.append(sentence)
+            current_words += words
+    
+    if current_chunk:
+        chunks.append('. '.join(current_chunk) + '.')
+    
+    return chunks
+
 
 def main():
     import argparse
@@ -53,9 +78,13 @@ def main():
     if args.file:
         with open(args.file, 'r') as f:
             text = f.read()
-            text_to_speech(text, output_file=args.output)
+            chunks = split_into_chunks(text)
+            for i, chunk in enumerate(chunks):
+                chunk_file_name = args.output.replace('.wav', f'_chunk{i:03d}.wav')
+                print(f"\nchunk: {i+1}/{len(chunks)}")
+                text_to_speech(chunk, output_file=chunk_file_name)
     else:
-        print("provide --output filename.wav")
+        print("provide --file input.txt")
 
 
 if __name__ == "__main__":
