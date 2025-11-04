@@ -40,30 +40,30 @@ The wind howls across the Greenland ice sheet as Dr. Sarah Chen adjusts her gogg
     """
 
 voices = [
-    "tara",
-    "leah",
-    "jess",
-    "leo",
-    "dan",
-    "mia",
-    "zac",
-    "zoe",
+    # "tara",
+    # "leah",
+    # "jess",
+    # "leo",
+    # "dan",
+    # "mia",
+    # "zac",
+    # "zoe",
+    "kaya",
 ]
 
 
 def test_all_voices():
     for voice in voices:
         text_to_speech(
-            "Hello, I'm "
-            + voice
-            + ". This is an example of using Orpheus TTS as a library.",
+            "Hello, I'm " + voice + long_text,
+            # + ". This is an example of using Orpheus TTS as a library.",
             voice=voice,
             output_file="example_" + voice + ".wav",
         )
         pass
 
 
-def long_example_test():
+def example_test():
     voice = "tara"
     text_to_speech(
         "Hello, I'm "
@@ -76,23 +76,8 @@ def long_example_test():
 
 
 def main():
-    # Example 1: Generate speech with Tara voice
-    # text_to_speech(
-    #     "Hello, I'm Tara. This is an example of using Orpheus TTS as a library.",
-    #     voice="tara",
-    #     output_file="example_tara.wav",
-    # )
-    #
-    # # Example 2: Generate speech with a different voice
-    # text_to_speech(
-    #     "Hi there, I'm Leo. I have a different voice than Tara.",
-    #     voice="leo",
-    #     output_file="example_leo.wav",
-    # )
-
-    # test_all_voices()
-
-    long_example_test()
+    test_all_voices()
+    # example_test()
 
     print("All available voices:")
     for voice in AVAILABLE_VOICES:

@@ -32,14 +32,15 @@ def text_to_speech(text, voice="tara", output_file=None):
 
 
 voices = [
-    "tara",
-    "leah",
-    "jess",
-    "leo",
-    "dan",
-    "mia",
-    "zac",
-    "zoe",
+    # "tara",
+    # "leah",
+    # "jess",
+    # "leo",
+    # "dan",
+    # "mia",
+    # "zac",
+    # "zoe",
+    "kaya",
 ]
 
 

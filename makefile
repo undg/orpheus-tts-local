@@ -13,7 +13,7 @@ install:
 	pip install -r requirements.txt
 
 install-rocm:
-	pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm7.0
+	pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm7.0
 
 run-lms:
 	echo "You need to start GUI first (lmstudio)"

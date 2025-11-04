@@ -19,7 +19,7 @@ A lightweight client for running [Orpheus TTS](https://huggingface.co/canopylabs
    ```bash
    python3 -m venv venv
    source venv/bin/activate
-   mise deactivate # if you use mise for version switching
+   mise deactivate # if you use mise for version switchingreq
    pip install -r requirements.txt
    ```
 6. Run the script:
